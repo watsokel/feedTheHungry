@@ -30,7 +30,7 @@ if (isset($_GET['pw'])) {
 /************
 * Functions *
 ************/
-function matchUserToEvent($db) {
+function deleteExpired($db) {
 	//check that username matches to eventId
 	if (!($stmt = $db->prepare("DELETE FROM food_items_available WHERE eat_by < CURDATE()"))) {
 			printError("Prepare failed: (" . $db->errno . ") " . $db->error);
