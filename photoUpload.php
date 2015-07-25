@@ -12,6 +12,9 @@
 </html>
 
 <?php
+
+// Based off of PHP 5 File Upload tutorial by W3 Schools at http://www.w3schools.com/php/php_file_upload.asp
+
 $date = date('YmdHis');
 $target_dir = "photos/";
 
