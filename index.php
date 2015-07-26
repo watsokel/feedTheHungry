@@ -120,6 +120,16 @@ if ($mysqli->connect_errno) {
                   </div>
                 </div>
               </div>
+              
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="submitButton"></label>
+                <div class="col-sm-9 controls">
+                  <input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-defa">
+                </div>
+              </div>
+
+
+
               <div class="form-group">
                 <label class="col-sm-3 control-label" for="submitButton"></label>
                 <div class="col-sm-9 controls">
@@ -214,36 +224,28 @@ if ($mysqli->connect_errno) {
     </div>
   </div>
 
-  <script src="https://code.jquery.com/jquery.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script language="javascript">
-    $('.dropdown-toggle').dropdown();
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/prettify.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
+<script language="javascript">
+    /*$('.dropdown-toggle').dropdown();
     $('.dropdown-menu').find('form').click(function (e) {
         e.stopPropagation();
-      });
-  </script>
-  <script language="javascript"> 
-    $('.datepicker').datepicker()
-  </script>
-  <script src="js/google-code-prettify/prettify.js"></script>
-  <script src="js/jquery.js"></script>
-  <script src="js/bootstrap-datepicker.js"></script>
-    
-  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
-
-
-<script>
+      });*/
+</script>
+<script>//http://formvalidation.io/examples/bootstrap-datepicker/
 $(document).ready(function() {
-    $('#datePicker')
-        .datepicker({
+    $('#datePicker').datepicker({
             format: 'mm/dd/yyyy'
         })
         .on('changeDate', function(e) {
-            // Revalidate the date field
-            $('#eventForm').formValidation('revalidateField', 'date');
+            //$('#eventForm').formValidation('revalidateField', 'date');
         });
 
-    $('#eventForm').formValidation({
+ /*   $('#eventForm').formValidation({
         framework: 'bootstrap',
         icon: {
             valid: 'glyphicon glyphicon-ok',
@@ -270,7 +272,7 @@ $(document).ready(function() {
                 }
             }
         }
-    });
+    });*/
 });
 </script>
   </body>
