@@ -108,8 +108,7 @@ if ($mysqli->connect_errno) {
               </div>
               <div class="form-group">
                 <label for="inputPassword" class="col-sm-3 control-label">Eat By</label>
-                <div class="col-sm-9">           
-                
+                <div class="col-sm-9">                 
                   <div class="form-group">
                     <div class="col-xs-5 date">
                       <div class="input-group input-append date" id="datePicker">
@@ -120,11 +119,10 @@ if ($mysqli->connect_errno) {
                   </div>
                 </div>
               </div>
-              
               <div class="form-group">
-                <label class="col-sm-3 control-label" for="submitButton"></label>
-                <div class="col-sm-9 controls">
-                  <input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-defa">
+                <label class="col-sm-3 control-label" for="submitButton">Upload photo</label>
+                <div class="col-sm-9">
+                  <input type="file" name="fileToUpload" id="fileToUpload" class="">
                 </div>
               </div>
 
