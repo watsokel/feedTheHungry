@@ -87,7 +87,7 @@ if ($mysqli->connect_errno) {
         <div class="col-md-8">
           <h1>Submit Food Items</h1>
           <div id="formContainer">
-            <form class="form-horizontal" action="index.php" method="post" role="form">
+            <form class="form-horizontal" action="add.php" method="post" role="form">
               <div class="form-group">
                 <label class="col-sm-3 control-label" for="foodType">Food Type</label>
                 <div class="col-sm-9">
@@ -184,9 +184,9 @@ if ($mysqli->connect_errno) {
   <div class="modal fade" id="contact" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form class="form-horizontal">
+        <form class="form-horizontal" action="#" method="post" role="form">
           <div class="modal-header">
-            <h4>Contact ClinAssist</h4>
+            <h4>Contact "Feed The Hungry" Group</h4>
           </div>
           <div class="modal-body">
             <div class="form-group">
