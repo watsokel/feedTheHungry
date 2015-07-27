@@ -4,7 +4,6 @@ ini_set('display_errors',1);
 include 'dbpass.php';
 include 'photoUpload.php';
 
-
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
 if ($mysqli->connect_errno) {
   echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
@@ -22,12 +21,6 @@ if ($mysqli->connect_errno) {
     <!-- Include Bootstrap Datepicker -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
-    <style type="text/css">
-    #eventForm .form-control-feedback {
-      top: 0;
-      right: -15px;
-    }
-    </style>
   </head>
 
   <body>
@@ -142,8 +135,11 @@ if ($mysqli->connect_errno) {
         <div class="col-md-4">
           <div>
             <?php 
-            if(isset($_POST['submitFood'])) {
-              $eatBy = $_POST['eatByDate'];                   //retrieve eatByDate string
+            if(isset($_POST['submitFood'])) { 
+              validateEatByDate($_POST['eatByDate']);
+            }
+            function validateEatByDate($eatBy){
+              global $mysqli;                                 //access the mysqli object
               $eatByDate = date("Y-m-d", strtotime($eatBy));  //reformat and create date object
               $currentDate = date("Y-m-d");                   //create date object
               $currentTime = strtotime($currentDate);         //convert date obj to sec since Epoch
@@ -223,12 +219,12 @@ if ($mysqli->connect_errno) {
     </div>
   </div>
 -->
-<script src="https://code.jquery.com/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/prettify.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>-->
+<script src="js/bootstrap-datepicker.min.js"></script>
 <script language="javascript">
     /*$('.dropdown-toggle').dropdown();
     $('.dropdown-menu').find('form').click(function (e) {
