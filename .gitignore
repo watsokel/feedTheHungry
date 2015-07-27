@@ -1,1 +1,7 @@
 dbpass.php
+
+#Ignoring the uploaded photos.  These don't need to be saved to our git
+photos/*
+
+#don't ignore photos/dummy.txt (so that the photos folder will continue to exist)
+!photos/dummy.txt
