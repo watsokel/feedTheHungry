@@ -23,7 +23,7 @@ function fileUploadError($str) {
 
 function uploadPhoto() {
     //set NULL in cases where no file is selected
-    if (!( isset($_FILES["fileToUpload"]["name"]) )) {
+    if (!( isset($_FILES["fileToUpload"]["name"]) && $_FILES["fileToUpload"]["size"] > 0)) {
       return NULL;
     }
     
