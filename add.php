@@ -4,7 +4,6 @@ ini_set('display_errors',1);
 include 'dbpass.php';
 include 'photoUpload.php';
 
-
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
 if ($mysqli->connect_errno) {
   echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
@@ -136,8 +135,11 @@ if ($mysqli->connect_errno) {
         <div class="col-md-4">
           <div>
             <?php 
-            if(isset($_POST['submitFood'])) {
-              $eatBy = $_POST['eatByDate'];                   //retrieve eatByDate string
+            if(isset($_POST['submitFood'])) { 
+              validateEatByDate($_POST['eatByDate']);
+            }
+            function validateEatByDate($eatBy){
+              global $mysqli;                                 //access the mysqli object
               $eatByDate = date("Y-m-d", strtotime($eatBy));  //reformat and create date object
               $currentDate = date("Y-m-d");                   //create date object
               $currentTime = strtotime($currentDate);         //convert date obj to sec since Epoch
