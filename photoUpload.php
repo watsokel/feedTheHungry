@@ -28,13 +28,17 @@ function uploadPhoto() {
     }
     
     //Target Directory to save file to:
-    $target_dir = "photos/";
+    $target_dir = "photos";
 
+    // Create the photos directory if it does not already exist
+    if ( file_exists("photos") === false) {
+        mkdir("photos", 0755);
+    }
     
     // Append timestamp to file name
     $date = date('YmdHis');
     $raw_file_name = explode(".", basename($_FILES["fileToUpload"]["name"]));
-    $target_file = $target_dir . $raw_file_name[0] . $date . '.' . $raw_file_name[1];
+    $target_file = $target_dir . "/" . $raw_file_name[0] . $date . '.' . $raw_file_name[1];
     $uploadOk = 1;
     $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
