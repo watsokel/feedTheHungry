@@ -176,10 +176,11 @@ if ($mysqli->connect_errno) {
       <div class="navbar navbar-default navbar-fixed-bottom">
         <div class="container">
           <p class="navbar-text pull-left">Site Built By "Feed The Hungry"</p>
-          <a class="navbar-btn btn btn-danger pull-right" href="#contact" data-toggle="modal">Need Help?</a>
+          <!--<a class="navbar-btn btn btn-danger pull-right" href="#contact" data-toggle="modal">Need Help?</a>-->
         </div>
       </div>
     </div>
+<!--
 
   <div class="modal fade" id="contact" role="dialog">
     <div class="modal-dialog">
@@ -219,7 +220,7 @@ if ($mysqli->connect_errno) {
       </div>
     </div>
   </div>
-
+-->
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/prettify.js"></script>
