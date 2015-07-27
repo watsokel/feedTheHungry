@@ -2,6 +2,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors',1);
 include 'dbpass.php';
+include 'photoUpload.php';
+
 
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
 if ($mysqli->connect_errno) {
@@ -80,7 +82,7 @@ if ($mysqli->connect_errno) {
         <div class="col-md-8">
           <h1>Submit Food Items</h1>
           <div id="formContainer">
-            <form class="form-horizontal" action="add.php" method="post" role="form">
+            <form class="form-horizontal" action="add.php" method="post" enctype="multipart/form-data" role="form">
               <div class="form-group">
                 <label class="col-sm-3 control-label" for="foodType">Food Type</label>
                 <div class="col-sm-9">
@@ -140,15 +142,16 @@ if ($mysqli->connect_errno) {
               $currentDate = date("Y-m-d");                   //create date object
               $currentTime = strtotime($currentDate);         //convert date obj to sec since Epoch
               $eatByTime = strtotime($eatByDate);             //convert date obj to sec since Epoch
+              $photoURL = uploadPhoto();
               if($eatByTime < $currentTime) {                 //prevent database access if invalid eatBy
                 echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>
                        Sorry, that date has already passed.
                      </div>';
               } else {
-                if (!($stmt = $mysqli->prepare("INSERT INTO food_items_available(food_type, servings, eat_by) VALUES (?,?,?)"))) {
+                if (!($stmt = $mysqli->prepare("INSERT INTO food_items_available(food_type, servings, eat_by, image_URL) VALUES (?,?,?,?)"))) {
                   echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
                 }
-                if (!$stmt->bind_param("sis", $_POST['foodType'], $_POST['servingSize'], $eatByDate)) {
+                if (!$stmt->bind_param("siss", $_POST['foodType'], $_POST['servingSize'], $eatByDate, $photoURL)) {
                   echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
                 }
                 if (!$stmt->execute()) {
