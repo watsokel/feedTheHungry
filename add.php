@@ -142,13 +142,12 @@ if ($mysqli->connect_errno) {
           <div>
             <?php 
             if(isset($_POST['submitFood'])) {
-              $eatBy = $_POST['eatByDate'];
-              $eatByDate = date("Y-m-d", strtotime($eatBy));  //reformat, then create date object
+              $eatBy = $_POST['eatByDate'];                   //retrieve eatByDate string
+              $eatByDate = date("Y-m-d", strtotime($eatBy));  //reformat and create date object
               $currentDate = date("Y-m-d");                   //create date object
               $currentTime = strtotime($currentDate);         //convert date obj to sec since Epoch
               $eatByTime = strtotime($eatByDate);             //convert date obj to sec since Epoch
-              
-              if($eatByTime < $currentTime) {
+              if($eatByTime < $currentTime) {                 //prevent database access if invalid eatBy
                 echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>
                        Sorry, that date has already passed.
                      </div>';
