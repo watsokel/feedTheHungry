@@ -59,7 +59,6 @@ if ($mysqli->connect_errno) {
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="../navbar/">Default</a></li>
               <li class="active"><a href="./">Static top</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login<b class="caret"></b></a>
