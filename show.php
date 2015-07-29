@@ -82,53 +82,61 @@ if ($mysqli->connect_errno) {
         <div class="col-md-8">
           <h1>Food Inventory</h1>
           <div id="formContainer">
-            <?php
-			if(isset($_POST['edit'])){
-				$UpdateQuery = $mysqli->prepare("UPDATE food_items_available SET status = 1, customer='$_POST[custNames]' WHERE id ='$_POST[edit]'");               
-				$UpdateQuery->execute();
-				$UpdateQuery->close();
-				echo "Items have now been Reserved.<br/>";
-      }
-      $inventory = "SELECT * FROM food_items_available WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
-      $list = $mysqli->query($inventory);
-      if($list->num_rows>0){
-        echo '<table class="table table-bordered table-hover table-striped table-responsive">';
-        echo '<tr>Inventory List</tr>';
-        echo '<tr><th>Food Item(s)</th><th>Number of Servings</th><th>Eat By</th><th>Image</th><th>Status</th><th>Enter Your Name to Reserve</th><th>Confirm Reserve</th></tr>';
-        while($rows = $list->fetch_assoc()){ 
-          echo '<tr><td>'.$rows["food_type"].'</td>';
-          echo '<td>'.$rows["servings"].'</td>';
-          echo '<td>'.$rows["eat_by"].'</td>';
-          if($rows["image_URL"] == NULL){
-            echo '<td>No Image Attached</td>';
-          }
-          else{
-            $picture = $rows["image_URL"];
-            echo '<td><img src= "https://web.engr.oregonstate.edu/~hengs/wiki/docs/FeedHungry/'.$picture.'" width="15" height="15"></td>';
-          }
-          if($rows["status"]==NULL){
-            $status = $rows["id"];
-            echo '<form action = "show.php" method="POST">';
-            echo "<td><input type='checkbox' value='Reserve' name='ToReserve' required/>Reserve</td>";
-            echo "<td><input type='text' name='custNames' required/></td>";
-            echo '<td><input type="hidden" name="edit" value="'.$rows['id'].'"/><input type="submit" class="btn btn-sm btn-warning" value="Reserve Item" name="edit1"/></td>';
-            echo "</form>";
-				  } else{					
-            echo '<td>Reserved</td>';
-            echo '<td>'.$rows["customer"].'</td>';
-				  }
-				
-                echo '</tr>';
-              }
-              echo '</table>';
+          <?php
+    			if(isset($_POST['edit'])){
+            if (!($updateQuery = $mysqli->prepare("UPDATE food_items_available SET status=?, customer=? WHERE id=?"))) {
+                echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
             }
-            else{
-              echo "No Inventory added to the list yet.";
-                }
-
-              $list->close();
-            ?>
-            
+            $statusSet = 1;
+            $customerName = $_POST['custNames'];
+          	if (!$updateQuery->bind_param("isi", $statusSet, $customerName, $_POST['edit'])) {
+              echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+            }
+		        if (!$updateQuery->execute()) {
+              echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+            }else{
+              echo '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>
+                    Thanks! Food item was successfully reserved!</div>';  
+            }
+    				$updateQuery->close();
+          }
+          $inventory = "SELECT * FROM food_items_available WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
+          $list = $mysqli->query($inventory);
+          if($list->num_rows>0){
+            echo '<table class="table table-bordered table-hover table-striped table-responsive">';
+            echo '<tr>Inventory List</tr>';
+            echo '<tr><th>Food Item(s)</th><th>Number of Servings</th><th>Eat By</th><th>Image</th><th>Status</th><th>Enter Your Name to Reserve</th><th>Confirm Reserve</th></tr>';
+            while($rows = $list->fetch_assoc()){ 
+              echo '<tr><td>'.$rows["food_type"].'</td>';
+              echo '<td>'.$rows["servings"].'</td>';
+              echo '<td>'.$rows["eat_by"].'</td>';
+              if($rows["image_URL"] == NULL){
+                echo '<td>No Image Attached</td>';
+              }
+              else{
+                $picture = $rows["image_URL"];
+                echo '<td><img src= "https://web.engr.oregonstate.edu/~hengs/wiki/docs/FeedHungry/'.$picture.'" width="15" height="15"></td>';
+              }
+              if($rows["status"]==NULL){
+                $status = $rows["id"];
+                echo '<form action = "show.php" method="POST">';
+                echo "<td><input type='checkbox' value='Reserve' name='ToReserve' required/>Reserve</td>";
+                echo "<td><input type='text' name='custNames' required/></td>";
+                echo '<td><input type="hidden" name="edit" value="'.$rows['id'].'"/><input type="submit" class="btn btn-sm btn-warning" value="Reserve Item" name="edit1"/></td>';
+                echo "</form>";
+    				  } else{					
+                echo '<td>Reserved</td>';
+                echo '<td>'.$rows["customer"].'</td>';
+                echo '<td></td>';
+    				  }
+              echo '</tr>';
+            }
+            echo '</table>';
+          } else{
+            echo "No Inventory added to the list yet.";        
+          }
+          $list->close();            
+          ?>            
           </div>
         </div>
         <div class="col-md-4">
