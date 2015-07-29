@@ -136,7 +136,15 @@ if ($mysqli->connect_errno) {
           <div>
             <?php 
             if(isset($_POST['submitFood'])) { 
-              validateEatByDate($_POST['eatByDate']);
+              $eatByDate = validateEatByDate($_POST['eatByDate']);
+              if($eatByDate == NULL){
+                echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>
+                       Sorry, that date has already passed.</div>';
+              }
+              else if ($eatByDate != NULL){
+                $photoURL = uploadPhoto();
+                addFood($_POST['foodType'], $_POST['servingSize'], $eatByDate, $photoURL);
+              }
             }
             function validateEatByDate($eatBy){
               global $mysqli;                                 //access the mysqli object
@@ -144,28 +152,29 @@ if ($mysqli->connect_errno) {
               $currentDate = date("Y-m-d");                   //create date object
               $currentTime = strtotime($currentDate);         //convert date obj to sec since Epoch
               $eatByTime = strtotime($eatByDate);             //convert date obj to sec since Epoch
-              $photoURL = uploadPhoto();
               if($eatByTime < $currentTime) {                 //prevent database access if invalid eatBy
-                echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>
-                       Sorry, that date has already passed.
-                     </div>';
+                return NULL;
               } else {
-                if (!($stmt = $mysqli->prepare("INSERT INTO food_items_available(food_type, servings, eat_by, image_URL) VALUES (?,?,?,?)"))) {
-                  echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
-                }
-                if (!$stmt->bind_param("siss", $_POST['foodType'], $_POST['servingSize'], $eatByDate, $photoURL)) {
-                  echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-                }
-                if (!$stmt->execute()) {
-                  echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-                } else {
-                  echo '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>
-                         Thanks! Food items were successfully submitted!
-                        </div>';
-                }
-                $stmt->close();
+                return $eatByDate;
               }
             }
+            function addFood($foodType, $servings, $eatBy, $imageURL){
+              global $mysqli;                                 //access the mysqli object
+              if (!($stmt = $mysqli->prepare("INSERT INTO food_items_available(food_type, servings, eat_by, image_URL) VALUES (?,?,?,?)"))) {
+                  echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+              }
+              if (!$stmt->bind_param("siss", $foodType, $servings, $eatBy, $imageURL)) {
+                echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+              }
+              if (!$stmt->execute()) {
+                echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+              } else {
+                echo '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>
+                       Thanks! Food items were successfully submitted!</div>';
+              }
+              $stmt->close();
+            }
+
             ?>
           </div>    
         </div>
