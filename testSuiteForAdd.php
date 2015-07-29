@@ -38,55 +38,57 @@ if ($mysqli->connect_errno) {
   </SECTION>
 
   <SECTION="testSuite">
+  <?php
+  
+  testValidateEatByDate("07/27/1982");
+  testValidateEatByDate("07/25/1990");
+  testValidateEatByDate("06/01/2015");
+  testValidateEatByDate("12/20/2016");
+  testValidateEatByDate("01/01/2050");
 
-<?php
+  addFood("Apples",5,"01/01/2016","www.somePage.com");
+  addFood("Oranges",10,"01/01/2080","www.example.com");
+  addFood("Pears & Mangos",20,"01/01/2099","www.example.com");
+  addFood("Potato Chips",21,"01/01/2100","www.example.com");
 
-testValidateEatByDate("07/27/1982");
-testValidateEatByDate("07/25/1990");
-testValidateEatByDate("06/01/2015");
-testValidateEatByDate("12/20/2016");
-testValidateEatByDate("01/01/2050");
-
-addFood("Apples",5,"01/01/2016","www.somePage.com");
-addFood("Oranges",10,"01/01/2080","www.example.com");
-addFood("Pears & Mangos",20,"01/01/2099","www.example.com");
-addFood("Potato Chips",21,"01/01/2100","www.example.com");
-
-function validateEatByDate($eatBy){
-  $eatByDate = date("Y-m-d", strtotime($eatBy));  //reformat and create date object
-  $currentDate = date("Y-m-d");                   //create date object
-  $currentTime = strtotime($currentDate);         //convert date obj to sec since Epoch
-  $eatByTime = strtotime($eatByDate);             //convert date obj to sec since Epoch
-  echo "<P>\$eatByDate=$eatByDate and \$currentDate=$currentDate ";
-  return ($eatByTime < $currentTime)? NULL:$eatByDate;
-}
-
-function testValidateEatByDate($dateToEvaluate){
-  if(validateEatByDate($dateToEvaluate)==NULL){
-    echo "ERROR: PRECEDES CURRENT DATE.</P>";
-  } else {
-    echo "EAT BY DATE IS VALID</P>";
-  }  
-}
-
-function addFood($foodType, $servings, $eatBy, $imageURL){
-  global $mysqli;                                 //access the mysqli object
-  if (!($stmt = $mysqli->prepare("INSERT INTO food_items_available(food_type, servings, eat_by, image_URL) VALUES (?,?,?,?)"))) {
-      echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+  /*Determines if eatby date exceeds current date*/
+  function validateEatByDate($eatBy){
+    $eatByDate = date("Y-m-d", strtotime($eatBy));  //reformat and create date object
+    $currentDate = date("Y-m-d");                   //create date object
+    $currentTime = strtotime($currentDate);         //convert date obj to sec since Epoch
+    $eatByTime = strtotime($eatByDate);             //convert date obj to sec since Epoch
+    echo "<P>\$eatByDate=$eatByDate and \$currentDate=$currentDate ";
+    return ($eatByTime < $currentTime)? NULL:$eatByDate;
   }
-  if (!$stmt->bind_param("siss", $foodType, $servings, $eatBy, $imageURL)) {
-    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-  }
-  if (!$stmt->execute()) {
-    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-  } else {
-    echo '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>
-           Thanks! Food items were successfully submitted!</div>';
-  }
-  $stmt->close();
-}
 
-?>
+  /*Calls the validateEatByDate function*/
+  function testValidateEatByDate($dateToEvaluate){
+    if(validateEatByDate($dateToEvaluate)==NULL){
+      echo "ERROR: PRECEDES CURRENT DATE.</P>";
+    } else {
+      echo "EAT BY DATE IS VALID</P>";
+    }  
+  }
+
+  /*Tests adding food to database*/
+  function addFood($foodType, $servings, $eatBy, $imageURL){
+    global $mysqli;                                 //access the mysqli object
+    if (!($stmt = $mysqli->prepare("INSERT INTO food_items_available(food_type, servings, eat_by, image_URL) VALUES (?,?,?,?)"))) {
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }
+    if (!$stmt->bind_param("siss", $foodType, $servings, $eatBy, $imageURL)) {
+      echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+    }
+    if (!$stmt->execute()) {
+      echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+    } else {
+      echo '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>
+             Thanks! Food items were successfully submitted!</div>';
+    }
+    $stmt->close();
+  }
+  ?>
+
   </SECTION>
   </BODY>
 </HTML>
