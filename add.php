@@ -3,7 +3,6 @@ error_reporting(E_ALL);
 ini_set('display_errors',1);
 include 'dbpass.php';
 include 'photoUpload.php';
-include 'show.php';
 
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
 if ($mysqli->connect_errno) {
@@ -39,8 +38,8 @@ if ($mysqli->connect_errno) {
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="active"><a href="index.html">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li><a href="#about">Add Food Items</a></li>
+              <li><a href="#contact">View Currently Available Food Items</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -128,7 +127,7 @@ if ($mysqli->connect_errno) {
                 <div class="col-sm-9 controls">
                   <input type="submit" id="submitButton" name="submitFood" class="btn btn-primary">
                   <input type="reset" id="reset" value="Reset" class="btn btn-defa">
-                  <a href="show.php" class="btn btn-primary btn-lg active" role="button">Inventory List</a>
+                  <a href="show.php" class="btn btn-primary btn-lg active" role="button">View Available Food Items</a>
                 </div>
               </div>
             </form> 
@@ -176,7 +175,6 @@ if ($mysqli->connect_errno) {
               }
               $stmt->close();
             }
-
             ?>
           </div>    
         </div>
@@ -190,7 +188,6 @@ if ($mysqli->connect_errno) {
       </div>
     </div>
 <!--
-
   <div class="modal fade" id="contact" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -212,7 +209,6 @@ if ($mysqli->connect_errno) {
                 <input type="email" class="form-control" id="contact-email" placeholder="you@example.com">
               </div>
             </div>
-
             <div class="form-group">
               <label for="contact-msg" class="col-lg-2 control-label">Message:</label>
               <div class="col-lg-10">
@@ -250,7 +246,6 @@ $(document).ready(function() {
         .on('changeDate', function(e) {
             //$('#eventForm').formValidation('revalidateField', 'date');
         });
-
  /*   $('#eventForm').formValidation({
         framework: 'bootstrap',
         icon: {
