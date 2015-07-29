@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors',1);
 include 'dbpass.php';
 include 'photoUpload.php';
+include 'show.php';
 
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
 if ($mysqli->connect_errno) {
@@ -127,6 +128,7 @@ if ($mysqli->connect_errno) {
                 <div class="col-sm-9 controls">
                   <input type="submit" id="submitButton" name="submitFood" class="btn btn-primary">
                   <input type="reset" id="reset" value="Reset" class="btn btn-defa">
+                  <a href="show.php" class="btn btn-primary btn-lg active" role="button">Inventory List</a>
                 </div>
               </div>
             </form> 
