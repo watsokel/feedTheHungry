@@ -22,12 +22,6 @@ if ($mysqli->connect_errno) {
     <!-- Include Bootstrap Datepicker -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
-    <style type="text/css">
-    #eventForm .form-control-feedback {
-      top: 0;
-      right: -15px;
-    }
-    </style>
   </head>
 
   <body>
@@ -93,8 +87,8 @@ if ($mysqli->connect_errno) {
 				$UpdateQuery = $mysqli->prepare("UPDATE food_items_available SET status = 1, customer='$_POST[custNames]' WHERE id ='$_POST[edit]'");               
 				$UpdateQuery->execute();
 				$UpdateQuery->close();
-				echo "Items has now been Reserved.<br/>";
-};
+				echo "Items have now been Reserved.<br/>";
+}
             $inventory = "SELECT * FROM food_items_available WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
             $list = $mysqli->query($inventory);
             if($list->num_rows>0){
