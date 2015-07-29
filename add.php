@@ -147,18 +147,16 @@ if ($mysqli->connect_errno) {
                 addFood($_POST['foodType'], $_POST['servingSize'], $eatByDate, $photoURL);
               }
             }
+
             function validateEatByDate($eatBy){
               global $mysqli;                                 //access the mysqli object
               $eatByDate = date("Y-m-d", strtotime($eatBy));  //reformat and create date object
               $currentDate = date("Y-m-d");                   //create date object
               $currentTime = strtotime($currentDate);         //convert date obj to sec since Epoch
               $eatByTime = strtotime($eatByDate);             //convert date obj to sec since Epoch
-              if($eatByTime < $currentTime) {                 //prevent database access if invalid eatBy
-                return NULL;
-              } else {
-                return $eatByDate;
-              }
+              return ($eatByTime < $currentTime)? NULL:$eatByDate;  //prevent database access if invalid eatBy
             }
+
             function addFood($foodType, $servings, $eatBy, $imageURL){
               global $mysqli;                                 //access the mysqli object
               if (!($stmt = $mysqli->prepare("INSERT INTO food_items_available(food_type, servings, eat_by, image_URL) VALUES (?,?,?,?)"))) {
@@ -187,57 +185,13 @@ if ($mysqli->connect_errno) {
         </div>
       </div>
     </div>
-<!--
-  <div class="modal fade" id="contact" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form class="form-horizontal" action="#" method="post" role="form">
-          <div class="modal-header">
-            <h4>Contact "Feed The Hungry" Group</h4>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="contact-name" class="col-lg-2 control-label">Name:</label>
-              <div class="col-lg-10">
-                <input type="text" class="form-control" id="contact-name" placeholder="Full Name">
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label for="contact-email" class="col-lg-2 control-label">Email:</label>
-              <div class="col-lg-10">
-                <input type="email" class="form-control" id="contact-email" placeholder="you@example.com">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="contact-msg" class="col-lg-2 control-label">Message:</label>
-              <div class="col-lg-10">
-                <textarea class="form-control" rows="8"></textarea>
-              </div>
-            </div>
-          
-          </div>
-          <div class="modal-footer">
-            <a class="btn btn-default" data-dismiss="modal">Cancel</a>
-            <button class="btn btn-primary" type="submit">Send</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
--->
 <script src="js/bootstrap.min.js"></script>
 <script src="js/prettify.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <!--<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>-->
 <script src="js/bootstrap-datepicker.min.js"></script>
-<script language="javascript">
-    /*$('.dropdown-toggle').dropdown();
-    $('.dropdown-menu').find('form').click(function (e) {
-        e.stopPropagation();
-      });*/
-</script>
+
 <script>//http://formvalidation.io/examples/bootstrap-datepicker/
 $(document).ready(function() {
     $('#datePicker').datepicker({
@@ -246,34 +200,6 @@ $(document).ready(function() {
         .on('changeDate', function(e) {
             //$('#eventForm').formValidation('revalidateField', 'date');
         });
- /*   $('#eventForm').formValidation({
-        framework: 'bootstrap',
-        icon: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            name: {
-                validators: {
-                    notEmpty: {
-                        message: 'The name is required'
-                    }
-                }
-            },
-            date: {
-                validators: {
-                    notEmpty: {
-                        message: 'The date is required'
-                    },
-                    date: {
-                        format: 'MM/DD/YYYY',
-                        message: 'The date is not a valid'
-                    }
-                }
-            }
-        }
-    });*/
 });
 </script>
   </body>
