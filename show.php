@@ -92,9 +92,9 @@ if ($mysqli->connect_errno) {
       $inventory = "SELECT * FROM food_items_available WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
       $list = $mysqli->query($inventory);
       if($list->num_rows>0){
-        echo '<table class="table table-bordered table-hover table-striped">';
+        echo '<table class="table table-bordered table-hover table-striped table-responsive">';
         echo '<tr>Inventory List</tr>';
-        echo '<tr><th>Type</th><th>Servings</th><th>Expiration Date</th><th>Image</th><th>Status</th><th>Customer Name</th><th>Confirm Reserve</th></tr>';
+        echo '<tr><th>Food Item(s)</th><th>Number of Servings</th><th>Eat By</th><th>Image</th><th>Status</th><th>Enter Your Name to Reserve</th><th>Confirm Reserve</th></tr>';
         while($rows = $list->fetch_assoc()){ 
           echo '<tr><td>'.$rows["food_type"].'</td>';
           echo '<td>'.$rows["servings"].'</td>';
