@@ -100,7 +100,7 @@ if ($mysqli->connect_errno) {
             }
     				$updateQuery->close();
           }
-          $inventory = "SELECT * FROM food_items_available WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
+          $inventory = "SELECT id, food_type, servings, eat_by, image_URL, status, customer FROM food_items_available WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
           $list = $mysqli->query($inventory);
           if($list->num_rows>0){
             echo '<table class="table table-bordered table-hover table-striped table-responsive">';
@@ -115,7 +115,7 @@ if ($mysqli->connect_errno) {
               }
               else{
                 $picture = $rows["image_URL"];
-                echo '<td><img src= "https://web.engr.oregonstate.edu/~hengs/wiki/docs/FeedHungry/'.$picture.'" width="15" height="15"></td>';
+                echo '<td><img src= "' . $picture.'" width="15" height="15"></td>';
               }
               if($rows["status"]==NULL){
                 $status = $rows["id"];
