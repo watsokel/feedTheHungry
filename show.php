@@ -79,13 +79,13 @@ if ($mysqli->connect_errno) {
     
     <div class="container"> 
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
           <h1>Food Inventory</h1>
           <div id="formContainer">
           <?php
     			if(isset($_POST['edit'])){
             if (!($updateQuery = $mysqli->prepare("UPDATE food_items_available SET status=?, customer=? WHERE id=?"))) {
-                echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+              echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
             }
             $statusSet = 1;
             $customerName = $_POST['custNames'];
@@ -138,11 +138,6 @@ if ($mysqli->connect_errno) {
           $list->close();            
           ?>            
           </div>
-        </div>
-        <div class="col-md-4">
-          <div>
-            
-          </div>    
         </div>
       </div>
 
