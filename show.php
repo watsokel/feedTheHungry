@@ -141,12 +141,12 @@ if ($mysqli->connect_errno) {
         </div>
       </div>
 
-      <div class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container">
-          <p class="navbar-text pull-left">Site Built By "Feed The Hungry"</p>
-          <!--<a class="navbar-btn btn btn-danger pull-right" href="#contact" data-toggle="modal">Need Help?</a>-->
+      <div class="container"> 
+        <div class="row">
+          <div class="col-md-12">Site Built By "Feed The Hungry"</div>
         </div>
       </div>
+      
     </div>
 
 <script src="https://code.jquery.com/jquery.js"></script>
