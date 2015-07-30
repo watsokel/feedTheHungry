@@ -147,7 +147,12 @@ if ($mysqli->connect_errno) {
                 addFood($_POST['foodType'], $_POST['servingSize'], $eatByDate, $photoURL);
               }
             }
-
+            
+            /*
+             * validateEatByDate()
+             * -----------
+             * Determines if eatby date exceeds current date
+             */
             function validateEatByDate($eatBy){
               global $mysqli;                                 //access the mysqli object
               $eatByDate = date("Y-m-d", strtotime($eatBy));  //reformat and create date object
@@ -157,6 +162,11 @@ if ($mysqli->connect_errno) {
               return ($eatByTime < $currentTime)? NULL:$eatByDate;  //prevent database access if invalid eatBy
             }
 
+            /*
+             * addFood()
+             * -----------
+             * Inserts food item records into database
+             */
             function addFood($foodType, $servings, $eatBy, $imageURL){
               global $mysqli;                                 //access the mysqli object
               if (!($stmt = $mysqli->prepare("INSERT INTO food_items_available(food_type, servings, eat_by, image_URL) VALUES (?,?,?,?)"))) {
