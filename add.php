@@ -97,7 +97,6 @@ if ($mysqli->connect_errno) {
                 <div class="col-sm-9 controls">
                   <input type="submit" id="submitButton" name="submitFood" class="btn btn-primary">
                   <input type="reset" id="reset" value="Reset" class="btn btn-defa">
-                  <a href="show.php" class="btn btn-primary btn-lg active" role="button">View Available Food Items</a>
                 </div>
               </div>
             </form> 
