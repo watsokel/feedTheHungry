@@ -79,6 +79,7 @@ function uploadPhoto() {
     // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+            chmod($target_file, 0644);
             return $target_file;
         } else {
             fileUploadError("There was an error uploading the file.");
