@@ -80,13 +80,12 @@ if ($mysqli->connect_errno) {
                     Thanks! Food item was successfully reserved!</div>';  
             }
     				$updateQuery->close();
-            sendConfirmationEmail($_POST['custEmail'],$_POST['reservedFood']);
+            sendConfirmationEmail($_SESSION['myEmail'],$_POST['foodTypeReserve']);
           }
           $inventory = "SELECT id, food_type, servings, eat_by, image_URL, status FROM feedTheHungry_foodItems WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
           $list = $mysqli->query($inventory);
           if($list->num_rows>0){
             echo '<table class="table table-bordered table-hover table-striped table-responsive">';
-            echo '<tr>Inventory List</tr>';
             echo '<tr><th>Food Item(s)</th><th>Number of Servings</th><th>Eat By</th><th>Image</th><th>Confirm Reserve</th></tr>';
             while($rows = $list->fetch_assoc()){ 
               echo '<tr><td>'.$rows["food_type"].'</td>';
@@ -102,9 +101,9 @@ if ($mysqli->connect_errno) {
               if($rows["status"]==0){
                 $status = $rows["id"];
                 echo '<form action = "show.php" method="POST">';
-
+                echo '<input type="hidden" name="foodTypeReserve" value="'.$rows['food_type'].'"/>';
                 echo '<td><input type="hidden" name="edit" value="'.$rows['id'].'"/><input type="submit" class="btn btn-sm btn-warning" value="Reserve Item" name="edit1"/></td>';
-                echo "</form>";
+                echo "<td></td></form>";
     				  } else{					
                 echo '<td>Reserved</td>';
     				  }
