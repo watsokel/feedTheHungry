@@ -65,28 +65,22 @@ if ($mysqli->connect_errno) {
           <div id="formContainer">
           <?php
     			if(isset($_POST['edit'])){
-            if (!filter_var($_POST['custEmail'], FILTER_VALIDATE_EMAIL)) {
-                echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>
-                       Sorry, the email address you entered is invalid.</div>';
+            if (!($updateQuery = $mysqli->prepare("UPDATE feedTheHungry_foodItems SET status=?, reserver_id=? WHERE id=?"))) {
+              echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
             }
-            else{
-              if (!($updateQuery = $mysqli->prepare("UPDATE feedTheHungry_foodItems SET status=?, reserver_id=? WHERE id=?"))) {
-                echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
-              }
-              $statusSet = 1;
-              $customerName = $_POST['custEmail'];
-            	if (!$updateQuery->bind_param("isi", $statusSet, $_SESSION['myID'], $_POST['edit'])) {
-                echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-              }
-  		        if (!$updateQuery->execute()) {
-                echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-              }else{
-                echo '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>
-                      Thanks! Food item was successfully reserved!</div>';  
-              }
-      				$updateQuery->close();
-              sendConfirmationEmail($_POST['custEmail'],$_POST['reservedFood']);
+            $statusSet = 1;
+            //$customerName = $_POST['custEmail'];
+          	if (!$updateQuery->bind_param("isi", $statusSet, $_SESSION['myID'], $_POST['edit'])) {
+              echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
             }
+		        if (!$updateQuery->execute()) {
+              echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+            }else{
+              echo '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>
+                    Thanks! Food item was successfully reserved!</div>';  
+            }
+    				$updateQuery->close();
+            sendConfirmationEmail($_POST['custEmail'],$_POST['reservedFood']);
           }
           $inventory = "SELECT id, food_type, servings, eat_by, image_URL, status FROM feedTheHungry_foodItems WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
           $list = $mysqli->query($inventory);

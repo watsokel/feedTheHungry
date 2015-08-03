@@ -5,11 +5,11 @@ session_start();
 if(!isset($_SESSION['myID'])){
   header('Location: login.php');
 }
-if($_SESSION['userType'] != 1){     
+if($_SESSION['userType'] != 0){     
   header('Location: add.php');
 }
 
-var_dump($_SESSION);
+//var_dump($_SESSION);
 include 'dbpass.php';
 include 'remoteDelete.php';
 include 'emailConfirmation.php';
@@ -61,7 +61,7 @@ if ($mysqli->connect_errno) {
     <div class="container"> 
       <div class="row">
         <div class="col-md-12">
-          <h1>Food Inventory</h1>
+          <h1>Report of Added Food Items</h1>
           <div id="formContainer">
           <?php
     			if(isset($_POST['edit'])){
@@ -88,31 +88,44 @@ if ($mysqli->connect_errno) {
               sendConfirmationEmail($_POST['custEmail'],$_POST['reservedFood']);
             }
           }
-          $inventory = "SELECT f.id, f.food_type, f.servings, f.eat_by, f.image_URL, f.status, u.email FROM feedTheHungry_foodItems f INNER JOIN feedTheHungry_users u ON f.reserver_id = u.id WHERE eat_by >= CURDATE() AND donor_id = ? ORDER BY status, eat_by";
-          $list = $mysqli->query($inventory);
-          if($list->num_rows>0){
+          $inventory = "SELECT food_type, servings, eat_by, image_URL, status, email 
+          FROM feedTheHungry_foodItems f LEFT JOIN feedTheHungry_users u ON reserver_id = u.id 
+          WHERE (eat_by >= CURDATE()) AND (donor_id=?) ORDER BY status, eat_by";
+          
+          if (!($report = $mysqli->prepare($inventory))) {
+            echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+          }
+
+          if (!$report->bind_param("i", $_SESSION['myID'])) {
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+          }
+          if (!$report->execute()) {
+            echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+          }
+          if(!$report->bind_result($foodType,$servings,$eatBy,$URL,$status,$email)) {
+            echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+          }
+          $report->store_result();
+          if($report->num_rows>0){
+            //echo $report->num_rows;
             echo '<table class="table table-bordered table-hover table-striped table-responsive">';
             echo '<tr>Inventory List</tr>';
             echo '<tr><th>Food Item(s)</th><th>Number of Servings</th><th>Eat By</th><th>Image</th><th>Confirm Reserve</th></tr>';
-            while($rows = $list->fetch_assoc()){ 
-              echo '<tr><td>'.$rows["food_type"].'</td>';
-              echo '<td>'.$rows["servings"].'</td>';
-              echo '<td>'.$rows["eat_by"].'</td>';
-              if($rows["image_URL"] == NULL){
+            while($report->fetch()){ 
+              echo '<tr><td>'.$foodType.'</td>';
+              echo '<td>'.$servings.'</td>';
+              echo '<td>'.$eatBy.'</td>';
+              if($URL == NULL){
                 echo '<td>No Image Attached</td>';
               }
               else{
-                $picture = $rows["image_URL"];
+                $picture = $URL;
                 echo '<td><img src= "' . $picture.'" width="15" height="15" class="grow" alt="photoOfFood"></td>';
               }
-              if($rows["status"]==0){
-                $status = $rows["id"];
-                echo '<form action = "show.php" method="POST">';
-
-                echo '<td><input type="hidden" name="edit" value="'.$rows['id'].'"/><input type="submit" class="btn btn-sm btn-warning" value="Reserve Item" name="edit1"/></td>';
-                echo "</form>";
+              if($status==0){
+                echo '<td>Not reserved</td>';
     				  } else{					
-                echo '<td>Reserved by </td>';
+                echo '<td>Reserved by $email</td>';
     				  }
               echo '</tr>';
             }
@@ -120,7 +133,7 @@ if ($mysqli->connect_errno) {
           } else{
             echo "No Inventory added to the list yet.";        
           }
-          $list->close();            
+          $report->close();            
           ?>            
           </div>
         </div>
