@@ -15,7 +15,7 @@ if((empty($_POST['eAddr'])) || ("" == trim($_POST['eAddr'])) || (!isset($_POST['
 	echo "Unable to unsubscribe. You must enter an email address.<br>";
 	echo "Return to the unsubscribe form <a href=\"unsubscribe.php\">here</a>";
 } else {
-	if (!($eMailStmt = $mysqli->prepare("DELETE FROM feedTheHungry_subscribers WHERE email=?"))) {
+	if (!($eMailStmt = $mysqli->prepare("UPDATE feedTheHungry_users SET subscribed = 0  WHERE email=?"))) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 	}
 	if (!$eMailStmt->bind_param("s", $_POST['eAddr'])) {
