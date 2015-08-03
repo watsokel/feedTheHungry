@@ -39,8 +39,8 @@ if ($mysqli->connect_errno) {
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="add.php">Add Food Items</a></li>
-              <li><a href="show.php">View Food Items</a></li>
+              <li><a href="add.php">Add Food Items</a></li>
+              <li class="active"><a href="show.php">View Food Items</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
             </ul>
