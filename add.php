@@ -82,7 +82,7 @@ if ($mysqli->connect_errno) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> 
               <div class="form-group">
                 <label class="col-sm-3 control-label" for="submitButton">Upload photo</label>
                 <div class="col-sm-9">
