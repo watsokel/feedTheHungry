@@ -22,6 +22,7 @@ if(isset($_POST['login'])) {
       if(!$stmt->bind_result($myID,$myEmail,$userType)) {
         echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
       }
+      $stmt->store_result();
       if($stmt->affected_rows==0){
         echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>Sorry, you did not enter a valid email/password.</div>';  
       } else {
