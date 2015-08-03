@@ -82,8 +82,8 @@ foreach($tableRows as $value){
 $messageTableEnd = "        
     </tbody>
   </table>
-  <p>To view all available food items and reserve, click  <a href=\"show.php\" target=\"_blank\">here</a></p>
-  <p>To unsubscribe, click <a href=\"http://web.engr.oregonstate.edu/~watsokel/cs361/projectB/unsubscribe.php\">here</a></p>
+  <p>To view all available food items and reserve, click  <a href=\"http://web.engr.oregonstate.edu/~watsokel/cs361/projectB/show.php\" target=\"_blank\">here</a></p>
+  <p>To unsubscribe, click <a href=\"http://web.engr.oregonstate.edu/~watsokel/cs361/projectB/unsubscribe.php\" target=\"_blank\">here</a></p>
   <footer>Sincerely,<br>Your team at \"Feed the Hungry\"</footer>
 </body>
 </html>";
