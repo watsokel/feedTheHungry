@@ -6,7 +6,7 @@ session_start();
 if(!isset($_SESSION['myID'])){
   header('Location: login.php');
 }
-if($_SESSION['userType'] != 1){
+if($_SESSION['userType'] != 1){     
   header('Location: add.php');
 }
 
@@ -48,8 +48,8 @@ if ($mysqli->connect_errno) {
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="show.php">View Food Items</a></li>
-              <li><a href="reportShow.php">View Report</a></li>
+              <li><a href="show.php">View Food Items</a></li>
+              <li class="active"><a href="reportShow.php">View Food Items</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="logout.php">Logout</a></li>
@@ -61,60 +61,78 @@ if ($mysqli->connect_errno) {
     <div class="container"> 
       <div class="row">
         <div class="col-md-12">
-          <h1>Food Inventory</h1>
+          <h1>Report of Reserved Items</h1>
           <div id="formContainer">
           <?php
-    			if(isset($_POST['edit'])){
-            if (!($updateQuery = $mysqli->prepare("UPDATE feedTheHungry_foodItems SET status=?, reserver_id=? WHERE id=?"))) {
-              echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+          if(isset($_POST['edit'])){
+            if (!filter_var($_POST['custEmail'], FILTER_VALIDATE_EMAIL)) {
+                echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>
+                       Sorry, the email address you entered is invalid.</div>';
             }
-            $statusSet = 1;
-            //$customerName = $_POST['custEmail'];
-          	if (!$updateQuery->bind_param("isi", $statusSet, $_SESSION['myID'], $_POST['edit'])) {
-              echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+            else{
+              if (!($updateQuery = $mysqli->prepare("UPDATE feedTheHungry_foodItems SET status=?, reserver_id=? WHERE id=?"))) {
+                echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+              }
+              $statusSet = 1;
+              $customerName = $_POST['custEmail'];
+              if (!$updateQuery->bind_param("isi", $statusSet, $_SESSION['myID'], $_POST['edit'])) {
+                echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+              }
+              if (!$updateQuery->execute()) {
+                echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+              }else{
+                echo '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>
+                      Thanks! Food item was successfully reserved!</div>';  
+              }
+              $updateQuery->close();
+              sendConfirmationEmail($_POST['custEmail'],$_POST['reservedFood']);
             }
-		        if (!$updateQuery->execute()) {
-              echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-            }else{
-              echo '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>
-                    Thanks! Food item was successfully reserved!</div>';  
-            }
-    				$updateQuery->close();
-            sendConfirmationEmail($_POST['custEmail'],$_POST['reservedFood']);
           }
-          $inventory = "SELECT id, food_type, servings, eat_by, image_URL, status FROM feedTheHungry_foodItems WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
-          $list = $mysqli->query($inventory);
-          if($list->num_rows>0){
+          $inventory = "SELECT food_type, servings, eat_by, image_URL, status, email 
+          FROM feedTheHungry_foodItems f LEFT JOIN feedTheHungry_users u ON reserver_id = u.id 
+          WHERE (eat_by >= CURDATE()) AND (reserver_id=?) ORDER BY status, eat_by";
+          
+          if (!($report = $mysqli->prepare($inventory))) {
+            echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+          }
+
+          if (!$report->bind_param("i", $_SESSION['myID'])) {
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+          }
+          if (!$report->execute()) {
+            echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+          }
+          if(!$report->bind_result($foodType,$servings,$eatBy,$URL,$status,$email)) {
+            echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+          }
+          $report->store_result();
+          if($report->num_rows>0){
+            //echo $report->num_rows;
             echo '<table class="table table-bordered table-hover table-striped table-responsive">';
-            echo '<tr>Inventory List</tr>';
             echo '<tr><th>Food Item(s)</th><th>Number of Servings</th><th>Eat By</th><th>Image</th><th>Confirm Reserve</th></tr>';
-            while($rows = $list->fetch_assoc()){ 
-              echo '<tr><td>'.$rows["food_type"].'</td>';
-              echo '<td>'.$rows["servings"].'</td>';
-              echo '<td>'.$rows["eat_by"].'</td>';
-              if($rows["image_URL"] == NULL){
+            while($report->fetch()){ 
+              echo '<tr><td>'.$foodType.'</td>';
+              echo '<td>'.$servings.'</td>';
+              echo '<td>'.$eatBy.'</td>';
+              if($URL == NULL){
                 echo '<td>No Image Attached</td>';
               }
               else{
-                $picture = $rows["image_URL"];
+                $picture = $URL;
                 echo '<td><img src= "' . $picture.'" width="15" height="15" class="grow" alt="photoOfFood"></td>';
               }
-              if($rows["status"]==0){
-                $status = $rows["id"];
-                echo '<form action = "show.php" method="POST">';
-
-                echo '<td><input type="hidden" name="edit" value="'.$rows['id'].'"/><input type="submit" class="btn btn-sm btn-warning" value="Reserve Item" name="edit1"/></td>';
-                echo "</form>";
-    				  } else{					
-                echo '<td>Reserved</td>';
-    				  }
+              if($status==0){
+                echo '<td>Not reserved</td>';
+              } else{         
+                echo "<td>Reserved by $email</td>";
+              }
               echo '</tr>';
             }
             echo '</table>';
           } else{
             echo "No Inventory added to the list yet.";        
           }
-          $list->close();            
+          $report->close();            
           ?>            
           </div>
         </div>

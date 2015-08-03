@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors',1);
+ini_set('session.save_path', '../sessionSaver');
 session_start();
 include 'dbpass.php';
 include 'photoUpload.php';
@@ -47,7 +48,7 @@ if ($mysqli->connect_errno) {
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="active"><a href="add.php">Add Food Items</a></li>
-              <li><a href="show.php">View Food Items</a></li>
+              <li><a href="reportAdds.php">View Report</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="logout.php">Logout</a></li>

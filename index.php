@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors',1);
 header('Content-Type: text/html; charset=utf-8');
 include 'dbpass.php';
+ini_set('session.save_path', '../sessionSaver');
 session_start();
 if(isset($_SESSION['myID'])) {
   if($_SESSION['userType']==0){

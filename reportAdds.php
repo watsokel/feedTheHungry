@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors',1);
+ini_set('session.save_path', '../sessionSaver');
 session_start();
 if(!isset($_SESSION['myID'])){
   header('Location: login.php');
@@ -9,7 +10,6 @@ if($_SESSION['userType'] != 0){
   header('Location: add.php');
 }
 
-//var_dump($_SESSION);
 include 'dbpass.php';
 include 'remoteDelete.php';
 include 'emailConfirmation.php';
@@ -48,8 +48,8 @@ if ($mysqli->connect_errno) {
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="add.php">Add Food Items</a></li>
-              <li><a href="show.php">View Food Items</a></li>
+              <li><a href="add.php">Add Food Items</a></li>
+              <li class="active"><a href="reportAdds.php">View Report</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="logout.php">Logout</a></li>
@@ -109,7 +109,6 @@ if ($mysqli->connect_errno) {
           if($report->num_rows>0){
             //echo $report->num_rows;
             echo '<table class="table table-bordered table-hover table-striped table-responsive">';
-            echo '<tr>Inventory List</tr>';
             echo '<tr><th>Food Item(s)</th><th>Number of Servings</th><th>Eat By</th><th>Image</th><th>Confirm Reserve</th></tr>';
             while($report->fetch()){ 
               echo '<tr><td>'.$foodType.'</td>';
@@ -125,7 +124,7 @@ if ($mysqli->connect_errno) {
               if($status==0){
                 echo '<td>Not reserved</td>';
     				  } else{					
-                echo '<td>Reserved by $email</td>';
+                echo "<td>Reserved by $email</td>";
     				  }
               echo '</tr>';
             }

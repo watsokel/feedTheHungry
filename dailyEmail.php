@@ -48,7 +48,7 @@ function sendDailyEmail(){
   $subject = 'Food Available Today at Feed the Hungry';
 
   $today = date("l, F j, Y g:i a, T");
-  if (!($foodStmt = $mysqli->prepare("SELECT food_type, servings, eat_by, status FROM food_items_available 
+  if (!($foodStmt = $mysqli->prepare("SELECT food_type, servings, eat_by, status FROM feedTheHungry_foodItems
       WHERE eat_by >= CURDATE() AND status = 0 ORDER BY eat_by"))) {
       echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
   }

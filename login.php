@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors',1);
 include 'dbpass.php';
+ini_set('session.save_path', '../sessionSaver');
 session_start();
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
 if ($mysqli->connect_errno) {
