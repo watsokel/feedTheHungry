@@ -105,11 +105,15 @@ if ($mysqli->connect_errno) {
           <div>
             <?php 
             var_dump($_POST);
-            if(isset($_POST['createAccount']) && !is_null($_POST['email']) && !is_null($_POST['password']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) { 
-              createAccount($_POST['firstName'],$_POST['lastName'],$_POST['email'],$_POST['password'],$_POST['role']);
-            } else {
-              echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>Sorry, you did not enter a valid email/password.</div>';
-            }
+            if(isset($_POST['createAccount'])){
+                if(!is_null($_POST['email']) && !is_null($_POST['password']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) { 
+                  createAccount($_POST['firstName'],$_POST['lastName'],$_POST['email'],$_POST['password'],$_POST['role']);
+                } else {
+                  echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>Sorry, you did not enter a valid email/password.</div>';
+                }
+            } 
+
+            
 
             /*
              * createAccount()
