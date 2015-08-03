@@ -93,7 +93,7 @@ if ($mysqli->connect_errno) {
               }
               else{
                 $picture = $rows["image_URL"];
-                echo '<td><img src= "' . $picture.'" width="15" height="15"></td>';
+                echo '<td><img src= "' . $picture.'" width="15" height="15" class="grow" alt="photoOfFood"></td>';
               }
               if($rows["status"]==0){
                 $status = $rows["id"];
