@@ -1,6 +1,15 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors',1);
+session_start();
+if(!isset($_SESSION['myID'])){
+  header('Location: login.php');
+}
+if($_SESSION['userType'] != 1){
+  header('Location: add.php');
+}
+
+var_dump($_SESSION);
 include 'dbpass.php';
 include 'remoteDelete.php';
 include 'emailConfirmation.php';
@@ -35,14 +44,15 @@ if ($mysqli->connect_errno) {
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Feed the Hungry</a>
+            <a class="navbar-brand" href="index.php">Feed the Hungry</a>
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li><a href="add.php">Add Food Items</a></li>
-              <li class="active"><a href="show.php">View Food Items</a></li>
+              <li class="active"><a href="add.php">Add Food Items</a></li>
+              <li><a href="show.php">View Food Items</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+              <li><a href="logout.php">Logout</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -60,12 +70,12 @@ if ($mysqli->connect_errno) {
                        Sorry, the email address you entered is invalid.</div>';
             }
             else{
-              if (!($updateQuery = $mysqli->prepare("UPDATE food_items_available SET status=?, customer=? WHERE id=?"))) {
+              if (!($updateQuery = $mysqli->prepare("UPDATE feedTheHungry_foodItems SET status=?, reserver_id=? WHERE id=?"))) {
                 echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
               }
               $statusSet = 1;
               $customerName = $_POST['custEmail'];
-            	if (!$updateQuery->bind_param("isi", $statusSet, $customerName, $_POST['edit'])) {
+            	if (!$updateQuery->bind_param("isi", $statusSet, $_SESSION['myID'], $_POST['edit'])) {
                 echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
               }
   		        if (!$updateQuery->execute()) {
@@ -78,12 +88,12 @@ if ($mysqli->connect_errno) {
               sendConfirmationEmail($_POST['custEmail'],$_POST['reservedFood']);
             }
           }
-          $inventory = "SELECT id, food_type, servings, eat_by, image_URL, status, customer FROM food_items_available WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
+          $inventory = "SELECT id, food_type, servings, eat_by, image_URL, status FROM feedTheHungry_foodItems WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
           $list = $mysqli->query($inventory);
           if($list->num_rows>0){
             echo '<table class="table table-bordered table-hover table-striped table-responsive">';
             echo '<tr>Inventory List</tr>';
-            echo '<tr><th>Food Item(s)</th><th>Number of Servings</th><th>Eat By</th><th>Image</th><th>Enter Your Email to Reserve</th><th>Confirm Reserve</th></tr>';
+            echo '<tr><th>Food Item(s)</th><th>Number of Servings</th><th>Eat By</th><th>Image</th><th>Confirm Reserve</th></tr>';
             while($rows = $list->fetch_assoc()){ 
               echo '<tr><td>'.$rows["food_type"].'</td>';
               echo '<td>'.$rows["servings"].'</td>';
@@ -98,15 +108,11 @@ if ($mysqli->connect_errno) {
               if($rows["status"]==0){
                 $status = $rows["id"];
                 echo '<form action = "show.php" method="POST">';
-                //echo "<td><input type='checkbox' value='Reserve' name='ToReserve' required/>Reserve</td>";
-                echo "<td><input type='text' name='custEmail' required/></td>";
+
                 echo '<td><input type="hidden" name="edit" value="'.$rows['id'].'"/><input type="submit" class="btn btn-sm btn-warning" value="Reserve Item" name="edit1"/></td>';
-                echo '<td><input type="hidden" name="reservedFood" value="'.$rows['food_type'].'"/></td>';
                 echo "</form>";
     				  } else{					
-                //echo '<td>Reserved</td>';
                 echo '<td>Reserved</td>';
-                echo '<td></td>';
     				  }
               echo '</tr>';
             }

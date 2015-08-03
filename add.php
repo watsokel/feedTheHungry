@@ -1,8 +1,17 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors',1);
+session_start();
 include 'dbpass.php';
 include 'photoUpload.php';
+
+if(!isset($_SESSION['myID'])){
+  header('Location: login.php');
+}
+if($_SESSION['userType'] != 0){
+  header('Location: show.php');
+}
+
 
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
 if ($mysqli->connect_errno) {
@@ -33,7 +42,7 @@ if ($mysqli->connect_errno) {
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Feed the Hungry</a>
+            <a class="navbar-brand" href="index.php">Feed the Hungry</a>
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -41,6 +50,7 @@ if ($mysqli->connect_errno) {
               <li><a href="show.php">View Food Items</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+              <li><a href="logout.php">Logout</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>

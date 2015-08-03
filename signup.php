@@ -85,8 +85,8 @@ if ($mysqli->connect_errno) {
                     <label class="control-label" for="donor">Food Donor</label>
                   </div>
                   <div class="radio">
-                    <input type="radio" name="role" id="distributor" value="1" required>
-                    <label class="control-label" for="distributor">Food Distributor</label>
+                    <input type="radio" name="role" id="reserver" value="1" required>
+                    <label class="control-label" for="reserver">Food Reserver</label>
                   </div>  
                 </div>
               </div>
@@ -106,30 +106,33 @@ if ($mysqli->connect_errno) {
             <?php 
             var_dump($_POST);
             if(isset($_POST['createAccount'])){
-                if(!is_null($_POST['email']) && !is_null($_POST['password']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) { 
-                  createAccount($_POST['firstName'],$_POST['lastName'],$_POST['email'],$_POST['password'],$_POST['role']);
+                if(!is_null($_POST['email']) && !is_null($_POST['password']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+                  if($_POST['role']==0){
+                    createAccount($_POST['firstName'],$_POST['lastName'],$_POST['email'],$_POST['password'],$_POST['role'],0);
+                  } 
+                  else {
+                    createAccount($_POST['firstName'],$_POST['lastName'],$_POST['email'],$_POST['password'],$_POST['role'],1);
+                  }
                 } else {
                   echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>Sorry, you did not enter a valid email/password.</div>';
                 }
             } 
-
-            
 
             /*
              * createAccount()
              * -----------
              * 
              */
-            function createAccount($firstName, $lastName, $email, $password, $userType){
+            function createAccount($firstName, $lastName, $email, $password, $userType, $subscribed){
               global $mysqli;                                 //access the mysqli object
-              if (!($stmt = $mysqli->prepare("INSERT INTO feedTheHungry_users(first_name,last_name,email,PASSWORD,user_type) VALUES (?,?,?,?,?)"))) {
+              if (!($stmt = $mysqli->prepare("INSERT INTO feedTheHungry_users(first_name,last_name,email,PASSWORD,user_type,subscribed) VALUES (?,?,?,?,?,?)"))) {
                   echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
               }
-              if (!$stmt->bind_param("ssssi", $firstName, $lastName, $email, $password, $userType)) {
+              if (!$stmt->bind_param("ssssii", $firstName, $lastName, $email, $password, $userType, $subscribed)) {
                 echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
               }
               if (!$stmt->execute()) {
-                echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+                echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>Sorry, that account already exists.</div>';
               } else {
                 echo '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>Thanks! Account successfully created!</div>';
               }

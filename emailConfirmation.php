@@ -11,6 +11,5 @@ function sendConfirmationEmail($eMail,$food){
   $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
   //$headers .= 'To: Kelvin Watson <watsokel@onid.oregonstate.edu>' . "\r\n";
   $headers .= 'From: Kelvin Watson <watsokel@onid.oregonstate.edu>' . "\r\n";
-  $headers .= "Bcc: $bcc" . "\r\n";
   mail($to, $subject, $message, $headers);
 }

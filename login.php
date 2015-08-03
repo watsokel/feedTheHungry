@@ -2,13 +2,14 @@
 error_reporting(E_ALL);
 ini_set('display_errors',1);
 include 'dbpass.php';
+session_start();
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
 if ($mysqli->connect_errno) {
   echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 if(isset($_POST['login'])) {
     if(!empty($_POST['email']) || !empty($_POST['password']) || ("" == trim($_POST['email'])) || ("" == trim($_POST['password']))) {
-      if (!($stmt = $mysqli->prepare("SELECT id,user_type FROM feedTheHungry_users WHERE email=? AND password=?"))) {
+      if (!($stmt = $mysqli->prepare("SELECT id,email,user_type FROM feedTheHungry_users WHERE email=? AND password=?"))) {
           echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
       }
       if (!$stmt->bind_param("ss", $_POST['email'],$_POST['password'])) {
@@ -17,7 +18,7 @@ if(isset($_POST['login'])) {
       if (!$stmt->execute()) {
           echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
       }
-      if(!$stmt->bind_result($myID,$userType)) {
+      if(!$stmt->bind_result($myID,$myEmail,$userType)) {
         echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
       }
       if($stmt->affected_rows==0){
@@ -25,6 +26,8 @@ if(isset($_POST['login'])) {
       } else {
         while($stmt->fetch()){
           $_SESSION['myID'] = $myID;
+          $_SESSION['myEmail'] = $myEmail;
+          $_SESSION['userType'] = $userType;
           if($userType==0){ //DONOR
             header('Location: add.php',true);
             die();

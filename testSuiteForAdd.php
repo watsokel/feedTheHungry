@@ -46,7 +46,7 @@ if ($mysqli->connect_errno) {
   testValidateEatByDate("12/20/2016");
   testValidateEatByDate("01/01/2050");
 
-  addFood("Apples",5,"01/01/2016","www.somePage.com");
+  addFood("Chocolate",5,"01/01/2016","www.somePage.com");
   addFood("Oranges",10,"01/01/2080","www.example.com");
   addFood("Pears & Mangos",20,"01/01/2099","www.example.com");
   addFood("Potato Chips",21,"01/01/2100","www.example.com");
