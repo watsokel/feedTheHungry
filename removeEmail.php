@@ -9,13 +9,12 @@ if ($mysqli->connect_errno) {
   echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
-var_dump($_POST);
 /*delete email addresses from database*/
 if((empty($_POST['eAddr'])) || ("" == trim($_POST['eAddr'])) || (!isset($_POST['eAddr']))) {
 	echo "Unable to unsubscribe. You must enter an email address.<br>";
 	echo "Return to the unsubscribe form <a href=\"unsubscribe.php\">here</a>";
 } else {
-	if (!($eMailStmt = $mysqli->prepare("UPDATE feedTheHungry_users SET subscribed = 0  WHERE email=?"))) {
+	if (!($eMailStmt = $mysqli->prepare("UPDATE feedTheHungry_users SET subscribed=0 WHERE email=?"))) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 	}
 	if (!$eMailStmt->bind_param("s", $_POST['eAddr'])) {
@@ -23,9 +22,9 @@ if((empty($_POST['eAddr'])) || ("" == trim($_POST['eAddr'])) || (!isset($_POST['
 	}
 	if (!$eMailStmt->execute()) {
     echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    echo 'Sorry, your email was not found in our records..';
 	}	else {
-		echo 'Sorry, your email was not found in our records..';
-		echo "Return to the unsubscribe form <a href=\"unsubscribe.php\">here</a>";
+		echo "The email $_POST[eAddr] was unsubscribed. Return to unsubscribe <a href=\"unsubscribe.php\">here</a>";
 	}
 	$eMailStmt->close();
 }
