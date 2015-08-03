@@ -138,10 +138,11 @@ if ($mysqli->connect_errno) {
              */
             function addFood($foodType, $servings, $eatBy, $imageURL){
               global $mysqli;                                 //access the mysqli object
-              if (!($stmt = $mysqli->prepare("INSERT INTO food_items_available(food_type, servings, eat_by, image_URL) VALUES (?,?,?,?)"))) {
+              $donorId = $_SESSION['myID'];
+              if (!($stmt = $mysqli->prepare("INSERT INTO feedTheHungry_foodItems(food_type, servings, eat_by, image_URL, donor_id) VALUES (?,?,?,?,?)"))) {
                   echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
               }
-              if (!$stmt->bind_param("siss", $foodType, $servings, $eatBy, $imageURL)) {
+              if (!$stmt->bind_param("sissi", $foodType, $servings, $eatBy, $imageURL, $donorId)) {
                 echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
               }
               if (!$stmt->execute()) {
