@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors',1);
 include 'dbpass.php';
 include 'remoteDelete.php';
+include 'emailConfirmation.php';
 
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
 if ($mysqli->connect_errno) {
@@ -38,40 +39,10 @@ if ($mysqli->connect_errno) {
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="add.php">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li class="divider"></li>
-                  <li class="dropdown-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
-                </ul>
-              </li>
+              <li class="active"><a href="add.php">Add Food Items</a></li>
+              <li><a href="show.php">View Food Items</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="./">Static top</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <form style="margin: 0px" accept-charset="UTF-8" action="/sessions" method="post">
-                    <!--Citation: http://mimi.kaktusteam.de/blog-posts/2012/02/login-menu-with-twitter-bootstrap/00-->
-                    <div style="margin:0; padding:0; display:inline">
-                      <input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="4L/A2ZMYkhTD3IiNDMTuB/fhPRvyCNGEsaZocUUpw40=" />
-                    </div>
-                    <fieldset class='textbox' style="padding:10px">
-                      <input style="margin-top: 8px" type="text" placeholder="Username" />
-                      <input style="margin-top: 8px" type="password" placeholder="Passsword" />
-                      <input class="btn btn-primary" name="commit" type="submit" value="Log In" />
-                    </fieldset>
-                  </form>
-                </ul>
-              </li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -104,6 +75,7 @@ if ($mysqli->connect_errno) {
                       Thanks! Food item was successfully reserved!</div>';  
               }
       				$updateQuery->close();
+              sendConfirmationEmail($_POST['custEmail'],$_POST['reservedFood']);
             }
           }
           $inventory = "SELECT id, food_type, servings, eat_by, image_URL, status, customer FROM food_items_available WHERE eat_by >= CURDATE() ORDER BY status, eat_by";
@@ -129,6 +101,7 @@ if ($mysqli->connect_errno) {
                 //echo "<td><input type='checkbox' value='Reserve' name='ToReserve' required/>Reserve</td>";
                 echo "<td><input type='text' name='custEmail' required/></td>";
                 echo '<td><input type="hidden" name="edit" value="'.$rows['id'].'"/><input type="submit" class="btn btn-sm btn-warning" value="Reserve Item" name="edit1"/></td>';
+                echo '<td><input type="hidden" name="reservedFood" value="'.$rows['food_type'].'"/></td>';
                 echo "</form>";
     				  } else{					
                 //echo '<td>Reserved</td>';
