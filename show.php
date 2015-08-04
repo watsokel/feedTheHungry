@@ -11,7 +11,6 @@ if($_SESSION['userType'] != 1){
 }
 
 include 'dbpass.php';
-include 'remoteDelete.php';
 include 'emailConfirmation.php';
 
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
@@ -103,7 +102,7 @@ if ($mysqli->connect_errno) {
                 echo '<form action = "show.php" method="POST">';
                 echo '<input type="hidden" name="foodTypeReserve" value="'.$rows['food_type'].'"/>';
                 echo '<td><input type="hidden" name="edit" value="'.$rows['id'].'"/><input type="submit" class="btn btn-sm btn-warning" value="Reserve Item" name="edit1"/></td>';
-                echo "<td></td></form>";
+                echo "</form>";
     				  } else{					
                 echo '<td>Reserved</td>';
     				  }
