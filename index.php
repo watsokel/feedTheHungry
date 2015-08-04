@@ -72,7 +72,7 @@ if(isset($_SESSION['myID'])) {
           <h1>Welcome to Feed the Hungry</h1>
           <h2>For Food Donors and Distributers</h2>
           <h3>Because people should not be hungry...</h3> 
-          <p><a href="about.html" class="btn btn-default">What is ClinicAssist and how do I use it? &raquo;</a></p>
+          <p><a href="about.html" class="btn btn-default">What is "Feed the Hungry" and how do I use it? &raquo;</a></p>
         </div>
         <div class="col-md-4">
           <div id="loginForm">
