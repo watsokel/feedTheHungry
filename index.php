@@ -5,6 +5,10 @@ header('Content-Type: text/html; charset=utf-8');
 include 'dbpass.php';
 ini_set('session.save_path', '../sessionSaver');
 session_start();
+
+
+//Redirect
+/*
 if(isset($_SESSION['myID'])) {
   if($_SESSION['userType']==0){
     header('Location: add.php');
@@ -12,6 +16,7 @@ if(isset($_SESSION['myID'])) {
     header('Location: show.php');
   }
 } 
+*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -41,7 +46,11 @@ if(isset($_SESSION['myID'])) {
             <ul class="nav navbar-nav">
             </ul>
             <ul class="nav navbar-nav navbar-right">
+            <?php if (!isset($_SESSION['myID'])) { ?>
               <li><a href="login.php">Login</a></li>
+            <?php } else { ?>
+              <li><a href="logout.php">Log out</a></li>
+            <?php } ?>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -60,6 +69,7 @@ if(isset($_SESSION['myID'])) {
             <form action="login.php" method="post">
               <fieldset>
                 <legend>Login</legend>
+                  <?php if (!isset($_SESSION['myID'])) { ?>
                   <div class="form-group">
                     <div class="input-group">
                       <span class="input-group-addon">
@@ -78,6 +88,9 @@ if(isset($_SESSION['myID'])) {
                   </div>
                 <input type="submit" name="login" class="btn btn-success" value="Login">
                 <a href="signup.php" class="btn btn-info">Create Account</a>
+                  <?php } else { ?>
+                <div><?php echo "You are logged in as {$_SESSION['myEmail']}." ?></div><a href="logout.php" class="btn btn-info">Log Out</a>
+                  <?php } ?>
               </fieldset>
             </form>
           </div>
