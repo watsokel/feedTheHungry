@@ -43,8 +43,18 @@ if(isset($_SESSION['myID'])) {
             <a class="navbar-brand" href="index.php">Feed the Hungry</a>
           </div>
           <div class="navbar-collapse collapse">
+            <?php if (isset($_SESSION['userType']) && ($_SESSION['userType'] === 1)) { ?>
             <ul class="nav navbar-nav">
+              <li><a href="show.php">View Food Items</a></li>
+              <li><a href="reportShow.php">View Report</a></li>
             </ul>
+            <?php } ?>
+            <?php if (isset($_SESSION['userType']) && ($_SESSION['userType'] === 0)) { ?>
+             <ul class="nav navbar-nav">
+              <li><a href="add.php">Add Food Items</a></li>
+              <li><a href="reportAdds.php">View Report</a></li>
+            </ul>
+            <?php } ?>
             <ul class="nav navbar-nav navbar-right">
             <?php if (!isset($_SESSION['myID'])) { ?>
               <li><a href="login.php">Login</a></li>
