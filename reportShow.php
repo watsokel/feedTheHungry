@@ -11,7 +11,6 @@ if($_SESSION['userType'] != 1){
 }
 
 include 'dbpass.php';
-include 'remoteDelete.php';
 include 'emailConfirmation.php';
 
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
@@ -49,7 +48,7 @@ if ($mysqli->connect_errno) {
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li><a href="show.php">View Food Items</a></li>
-              <li class="active"><a href="reportShow.php">View Food Items</a></li>
+              <li class="active"><a href="reportShow.php">View Report</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="logout.php">Logout</a></li>
