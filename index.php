@@ -57,6 +57,7 @@ if(isset($_SESSION['myID'])) {
             <?php } ?>
             <ul class="nav navbar-nav navbar-right">
             <?php if (!isset($_SESSION['myID'])) { ?>
+              <li><a href="signup.php">Signup</a></li>
               <li><a href="login.php">Login</a></li>
             <?php } else { ?>
               <li><a href="logout.php">Log out</a></li>
@@ -72,7 +73,7 @@ if(isset($_SESSION['myID'])) {
           <h1>Welcome to Feed the Hungry</h1>
           <h2>For Food Donors and Distributers</h2>
           <h3>Because people should not be hungry...</h3> 
-          <p><a href="about.html" class="btn btn-default">What is "Feed the Hungry" and how do I use it? &raquo;</a></p>
+          <p><a href="signup.php" class="btn btn-default">Create an account to donate or reserve food items &raquo;</a></p>
         </div>
         <div class="col-md-4">
           <div id="loginForm">
@@ -115,17 +116,14 @@ if(isset($_SESSION['myID'])) {
     <div class="container">
       <div class="row">
         <div class="col-md-6">
-          <h3>FILL IN SOME INFORMATION</h3>
-            <p>You will be granted administrator privileges, which allows you to accomplish the following:</p>
-            <ul>
-              <li>FILL IN SOME INFORMATION</li>
-              <li>FILL IN SOME INFORMATION</li>
-            </ul>
+          <h3>What is "Feed the Hungry?"</h3>
+            <p>"Feed the Hungry" was designed to allow people to donate food items in order to feed hungry people. When donors add their food to 
+            this website, others can reserve food items and distribute them to those who need it the most.</p>
             <p>Ready? <a href="signup.php">Sign up today!</a></p>
         </div>
         <div class="col-md-6">
-            <h3>FILL IN SOME INFORMATION</h3>
-            <p>FILL IN SOME INFORMATION.</p>
+            <h3>For Donors and Distributors</h3>
+            <p>When you create an account, you can either register as a food donor, or a food distributor/reserver.</p>
             <p>Ready? <a href="signup.php">Sign up today!</a></p>
         </div>
       </div>

@@ -69,7 +69,7 @@ if(isset($_POST['login'])) {
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Feed the Hungry</a>
+            <a class="navbar-brand" href="index.php">Feed the Hungry</a>
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
