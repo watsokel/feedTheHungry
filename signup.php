@@ -2,6 +2,16 @@
 error_reporting(E_ALL);
 ini_set('display_errors',1);
 include 'dbpass.php';
+ini_set('session.save_path', '../sessionSaver');
+session_start();
+
+if(isset($_SESSION['myID'])){
+  if($_SESSION['userType'] == 0){
+    header('Location: add.php');  
+  } else if ($_SESSION['userType'] == 1){
+    header('Location: show.php');    
+  }  
+}
 
 $mysqli = new mysqli('oniddb.cws.oregonstate.edu', 'watsokel-db', $dbpass, 'watsokel-db');
 if ($mysqli->connect_errno) {
@@ -32,7 +42,7 @@ if ($mysqli->connect_errno) {
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Feed the Hungry</a>
+            <a class="navbar-brand" href="index.php">Feed the Hungry</a>
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -104,7 +114,6 @@ if ($mysqli->connect_errno) {
         <div class="col-md-4">
           <div>
             <?php 
-            var_dump($_POST);
             if(isset($_POST['createAccount'])){
                 if(!is_null($_POST['email']) && !is_null($_POST['password']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                   if($_POST['role']==0){
