@@ -5007,8 +5007,11 @@ a.badge:focus {
   padding-top: 30px;
   padding-bottom: 30px;
   margin-bottom: 30px;
-  color: inherit;
+  color: white;
+  font-weight: bolder;
   background-color: #eee;
+  background-image: url("../images/carrots.jpg");
+  background-size: cover;
 }
 .jumbotron h1,
 .jumbotron .h1 {

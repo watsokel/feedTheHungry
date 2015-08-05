@@ -25,7 +25,6 @@ if(isset($_SESSION['myID'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Feed The Hungry</title>
     <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/style.css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
   </head>
@@ -70,7 +69,7 @@ if(isset($_SESSION['myID'])) {
     <div class="container"> 
       <div class="row">
         <div class="col-md-8 jumbotron">
-          <h1>Welcome to Feed the Hungry</h1>
+          <h1>Welcome to <br>Feed the Hungry</h1>
           <h2>For Food Donors and Distributers</h2>
           <h3>Because people should not be hungry...</h3> 
           <p><a href="signup.php" class="btn btn-default">Create an account to donate or reserve food items &raquo;</a></p>
