@@ -88,7 +88,7 @@ if ($mysqli->connect_errno) {
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-3 control-label" for="donor">Role</label>
+                <label class="col-sm-3 control-label" for="donor">I am a</label>
                 <div class="col-sm-9 controls radio">
                   <div class="radio">
                     <input type="radio" name="role" id="donor" value="0" checked="checked" required>

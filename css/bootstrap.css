@@ -5009,7 +5009,7 @@ a.badge:focus {
   margin-bottom: 30px;
   color: white;
   font-weight: bolder;
-  background-color: #eee;
+  background-color: #000;
   background-image: url("../images/carrots.jpg");
   background-size: cover;
 }
