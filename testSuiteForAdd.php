@@ -46,10 +46,10 @@ if ($mysqli->connect_errno) {
   testValidateEatByDate("12/20/2016");
   testValidateEatByDate("01/01/2050");
 
-  addFood("Chocolate",5,"01/01/2016","www.somePage.com");
-  addFood("Oranges",10,"01/01/2080","www.example.com");
-  addFood("Pears & Mangos",20,"01/01/2099","www.example.com");
-  addFood("Potato Chips",21,"01/01/2100","www.example.com");
+  addFood("Chocolate",5,"20160101","www.somePage.com");
+  addFood("Oranges",10,"20800101","www.example.com");
+  addFood("Pears & Mangos",20,"20990101","www.example.com");
+  addFood("Potato Chips",21,"21000101","www.example.com");
 
   /*Determines if eatby date exceeds current date*/
   function validateEatByDate($eatBy){
@@ -73,10 +73,11 @@ if ($mysqli->connect_errno) {
   /*Tests adding food to database*/
   function addFood($foodType, $servings, $eatBy, $imageURL){
     global $mysqli;                                 //access the mysqli object
-    if (!($stmt = $mysqli->prepare("INSERT INTO food_items_available(food_type, servings, eat_by, image_URL) VALUES (?,?,?,?)"))) {
+    $donorID = 0;
+    if (!($stmt = $mysqli->prepare("INSERT INTO feedTheHungry_foodItems(food_type, servings, eat_by, image_URL, donor_id) VALUES (?,?,?,?,?)"))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
-    if (!$stmt->bind_param("siss", $foodType, $servings, $eatBy, $imageURL)) {
+    if (!$stmt->bind_param("sissi", $foodType, $servings, $eatBy, $imageURL, $donorID)) {
       echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
     }
     if (!$stmt->execute()) {
