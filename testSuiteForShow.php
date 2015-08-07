@@ -16,15 +16,20 @@
   <SECTION="testSuite">
  
 <?php
-	
-	$unreserved="SELECT id FROM feedTheHungry_foodItems WHERE status = 0";
+    //add items to table without output
+	ob_start();
+    include('testSuiteForAdd.php');
+    ob_end_clean();
+    
+    
+	$unreserved="SELECT id FROM feedTheHungry_foodItems WHERE (status = 0) AND (donor_id = 1)";
 	$list = $mysqli->query($unreserved);
           if($list->num_rows>0){
            while($rows = $list->fetch_assoc()){ 
            	$new_array[] = $rows['id'];
            	}
      foreach($new_array as $value){
-     	updateFood(1, 0, $value);
+     	updateFood(1 /*Reserved*/, 1 /*test user*/, $value /*foodId-Number*/);
      }}
 			else{
 				echo '<p>No food available to reserve</p>';

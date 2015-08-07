@@ -73,7 +73,7 @@ if ($mysqli->connect_errno) {
   /*Tests adding food to database*/
   function addFood($foodType, $servings, $eatBy, $imageURL){
     global $mysqli;                                 //access the mysqli object
-    $donorID = 0;
+    $donorID = 1;
     if (!($stmt = $mysqli->prepare("INSERT INTO feedTheHungry_foodItems(food_type, servings, eat_by, image_URL, donor_id) VALUES (?,?,?,?,?)"))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
