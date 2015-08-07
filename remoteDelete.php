@@ -32,7 +32,7 @@ if (isset($_GET['pw'])) {
 ************/
 function deleteExpired($db) {
 	//check that username matches to eventId
-	if (!($stmt = $db->prepare("DELETE FROM food_items_available WHERE eat_by < CURDATE()"))) {
+	if (!($stmt = $db->prepare("DELETE FROM feedTheHungry_foodItems WHERE eat_by < CURDATE()"))) {
 			printError("Prepare failed: (" . $db->errno . ") " . $db->error);
 			return;
 	}
@@ -40,7 +40,7 @@ function deleteExpired($db) {
 	$stmt->execute();
 	$stmt->close();
     
-    echo "Performed SQL Query 'DELETE FROM food_items_available WHERE eat_by < CURDATE()'";
+    echo "Performed SQL Query 'DELETE FROM feedTheHungry_foodItems WHERE eat_by < CURDATE()'";
 }
 
 
