@@ -97,7 +97,6 @@ if(isset($_SESSION['myID'])) {
                     </div> 
                   </div>
                 <input type="submit" name="login" class="btn btn-success" value="Login">
-                <a href="signup.php" class="btn btn-info">Create Account</a>
                   <?php } else { ?>
                 <div><?php echo "You are logged in as {$_SESSION['myEmail']}." ?></div><a href="logout.php" class="btn btn-info">Log Out</a>
                   <?php } ?>
