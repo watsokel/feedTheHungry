@@ -97,8 +97,8 @@ if ($mysqli->connect_errno) {
               <div class="form-group">
                 <label class="col-sm-3 control-label" for="submitButton">Upload photo</label>
                 <div class="col-sm-9">
-                  <input type="file" name="fileToUpload" id="fileToUpload" class="">
-                </div>
+                  <input type="file" name="fileToUpload" id="fileToUpload" class=""> Max filesize: 500kB
+                </div>    
               </div>
 
 
