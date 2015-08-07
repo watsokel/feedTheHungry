@@ -5,7 +5,7 @@
 * For handling errors in file uploads later
 */
 function fileUploadError($str) {
-    echo $str;
+    echo $str . "</br>\n";
     return;
 }
 
@@ -41,7 +41,8 @@ function uploadPhoto() {
     $target_file = $target_dir . "/" . $raw_file_name[0] . $date . '.' . $raw_file_name[1];
     $uploadOk = 1;
     $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
-
+    $imageFileType = strtolower($imageFileType);
+    
     // Check if image file is a actual image or fake image
     if(isset($_POST["submit"])) {
         $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
