@@ -87,7 +87,7 @@ if ($mysqli->connect_errno) {
                   <div class="form-group">
                     <div class="col-xs-5 date">
                       <div class="input-group input-append date" id="datePicker">
-                        <input type="text" class="form-control" name="eatByDate" />
+                        <input type="text" class="form-control" name="eatByDate" required>
                           <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
                       </div>
                     </div>
@@ -117,14 +117,19 @@ if ($mysqli->connect_errno) {
           <div>
             <?php 
             if(isset($_POST['submitFood'])) { 
-              $eatByDate = validateEatByDate($_POST['eatByDate']);
-              if($eatByDate == NULL){
+              if(!isset($_POST['servingSize']) || !isset($_POST['eatByDate'])){
                 echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>
-                       Sorry, that date has already passed.</div>';
-              }
-              else if ($eatByDate != NULL){
-                $photoURL = uploadPhoto();
-                addFood($_POST['foodType'], $_POST['servingSize'], $eatByDate, $photoURL);
+                       Sorry, you must enter all fields.</div>';
+              } else {
+                $eatByDate = validateEatByDate($_POST['eatByDate']);
+                if($eatByDate == NULL){
+                  echo '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>
+                         Sorry, that date has already passed.</div>';
+                }
+                else if ($eatByDate != NULL){
+                  $photoURL = uploadPhoto();
+                  addFood($_POST['foodType'], $_POST['servingSize'], $eatByDate, $photoURL);
+                }
               }
             }
             
