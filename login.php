@@ -10,10 +10,11 @@ if ($mysqli->connect_errno) {
 }
 if(isset($_POST['login'])) {
     if(!empty($_POST['email']) || !empty($_POST['password']) || ("" == trim($_POST['email'])) || ("" == trim($_POST['password']))) {
+        $password = hash("md5", $_POST['password']); 
       if (!($stmt = $mysqli->prepare("SELECT id,email,user_type FROM feedTheHungry_users WHERE email=? AND password=?"))) {
           echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
       }
-      if (!$stmt->bind_param("ss", $_POST['email'],$_POST['password'])) {
+      if (!$stmt->bind_param("ss", $_POST['email'],$password)) {
          echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
       }
       if (!$stmt->execute()) {

@@ -45,12 +45,7 @@ if ($mysqli->connect_errno) {
             <a class="navbar-brand" href="index.php">Feed the Hungry</a>
           </div>
           <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="add.php">Add Food Items</a></li>
-              <li><a href="show.php">View Food Items</a></li>
-            </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="signup.php">Sign Up</a></li>
               <li class="active"><a href="login.php">Login</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -134,6 +129,7 @@ if ($mysqli->connect_errno) {
              */
             function createAccount($firstName, $lastName, $email, $password, $userType, $subscribed){
               global $mysqli;                                 //access the mysqli object
+              $password = hash("md5", $password); 
               if (!($stmt = $mysqli->prepare("INSERT INTO feedTheHungry_users(first_name,last_name,email,PASSWORD,user_type,subscribed) VALUES (?,?,?,?,?,?)"))) {
                   echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
               }
